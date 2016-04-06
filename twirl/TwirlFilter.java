@@ -1,4 +1,11 @@
-public class BilinearFilter extends Filter {
+public class TwirlFilter extends Filter {
+
+  double rmax;
+  double alpha;
+
+  public TwirlFilter(double r, double a) {
+    this.rmax = r; this.alpha = a;
+  }
 
   double Clamp(double x, double top, double bottom) {
     return Math.max(bottom, Math.min(top, x));
@@ -36,9 +43,6 @@ public class BilinearFilter extends Filter {
     double xc = (double)new_width / 2.0;
     double yc = (double)new_height / 2.0;
 
-    double rmax = 100;
-    double alpha = 30;
-
     int[][] out_image = new int[new_width][new_height];
 
     for (int i = 0; i < new_width; i++) {
@@ -46,7 +50,7 @@ public class BilinearFilter extends Filter {
         double dx = i - xc;
         double dy = j - yc;
         double radius = Math.sqrt(dx*dx + dy*dy);
-        double beta = Math.atan2(j, i) + (alpha * ((rmax - radius) / rmax));
+        double beta = Math.atan((double)j / (double)i) + (alpha * ((rmax - radius) / rmax));
 
         double x = radius > rmax ? i : xc + radius * Math.cos(beta);
         double y = radius > rmax ? j : yc + radius * Math.sin(beta);

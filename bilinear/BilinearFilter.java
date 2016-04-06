@@ -1,5 +1,12 @@
 public class BilinearFilter extends Filter {
 
+  double width_scale;
+  double height_scale;
+
+  public BilinearFilter(double width, double height) {
+    this.width_scale = width; this.height_scale = height;
+  }
+
   double Bilinear(int[][] image, double x, double y) {
     int width = image.length;
     int height = image[0].length;
@@ -19,14 +26,17 @@ public class BilinearFilter extends Filter {
     int width = image.length;
     int height = image[0].length;
 
-    int new_width  = width * 3;
-    int new_height = height * 3;
+    double new_width  = width  * width_scale;
+    double new_height = height * height_scale;
 
-    int[][] out_image = new int [new_width][new_height];
+    Out.put("width: " +  new_width);
+    Out.put("height: " + new_height);
+
+    int[][] out_image = new int [(int)new_width][(int)new_height];
 
     for (int i = 0; i < new_width; i++) {
       for (int j = 0; j < new_height; j++) {
-        double x = i * (double)width / (double)new_width;
+        double x = i * (double)width  / (double)new_width;
         double y = j * (double)height / (double)new_height;
         out_image[i][j] = Math.max(0, Math.min(255, (int)Bilinear(image, x, y)));
       }

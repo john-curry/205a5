@@ -1,4 +1,5 @@
 public class Out {
+ 
   public static void put(String s) {
     System.out.println(s);
   }

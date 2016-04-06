@@ -16,8 +16,8 @@ import java.io.File;
 
 public class ImageProcessor205BW {
 	
-	public static int[][] ProcessImage( int [][] inputPixels, boolean inverse, double sigma, double mu){
-    return (new BilinearFilter()).ApplyFilter(inputPixels);
+	public static int[][] ProcessImage( int [][] inputPixels, boolean inverse, double width, double height){
+    return (new BilinearFilter( width, height )).ApplyFilter(inputPixels);
 	}
 	
 	private static Color[][] load_image(String image_filename){
@@ -93,24 +93,19 @@ public class ImageProcessor205BW {
 			
 		String output_filename = input_filename.substring(0,input_filename.length()-4)+"_output.png";
 
-    boolean inverse = false;
-
-    if (args.length > 2) {
-      inverse = Boolean.parseBoolean(args[1]);
-    }
     double sigma = 50;
     double mu = 128;
 
-    if (args.length > 4) {
-      sigma = Double.parseDouble(args[2]);
-      mu    = Double.parseDouble(args[3]);
-    }
+    //if (args.length > 4) {
+      sigma = Double.parseDouble(args[1]);
+      mu    = Double.parseDouble(args[2]);
+    //}
 
     Color[][] inputPixels = load_image(input_filename);
 
 		int[][] inputIntensities = ColoursToIntensities(inputPixels);
 				
-		int[][] resultIntensities = ProcessImage(inputIntensities, inverse, sigma, mu);
+		int[][] resultIntensities = ProcessImage(inputIntensities, true, sigma, mu);
 		
 		Color[][] resultPixels = IntensitiesToColours(resultIntensities);
 		
